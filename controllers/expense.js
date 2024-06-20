@@ -3,6 +3,8 @@ const ExpenseSchema = require("../models/expenseModel");
 exports.addExpense = async (req, res) => {
   const { email, title, amount, category, subcategory, icon } = req.body;
 
+  console.log("Received payload:", req.body); // Debugging line
+
   const expense = new ExpenseSchema({
     email,
     title,
@@ -17,7 +19,7 @@ exports.addExpense = async (req, res) => {
     if (!email || !title || !category || !subcategory || !icon) {
       return res.status(400).json({ message: "All fields are required!" });
     }
-    if (amount <= 0 || typeof amount !== "number") {
+    if (amount <= 0 || amount !== "number") {
       return res
         .status(400)
         .json({ message: "Amount must be a positive number!" });
@@ -25,6 +27,7 @@ exports.addExpense = async (req, res) => {
     await expense.save();
     res.status(200).json({ message: "Expense Added" });
   } catch (error) {
+    console.error("Error saving expense:", error); // Debugging line
     res.status(500).json({ message: "Server Error" });
   }
 };
