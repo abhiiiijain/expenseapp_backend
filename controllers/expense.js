@@ -18,7 +18,9 @@ exports.addExpense = async (req, res) => {
       return res.status(400).json({ message: "All fields are required!" });
     }
     if (amount <= 0 || typeof amount !== "number") {
-      return res.status(400).json({ message: "Amount must be a positive number!" });
+      return res
+        .status(400)
+        .json({ message: "Amount must be a positive number!" });
     }
     await expense.save();
     res.status(200).json({ message: "Expense Added" });
@@ -30,7 +32,9 @@ exports.addExpense = async (req, res) => {
 exports.getExpenses = async (req, res) => {
   try {
     const userEmail = req.user.email;
-    const expenses = await ExpenseSchema.find({ email: userEmail }).sort({ createdAt: -1 });
+    const expenses = await ExpenseSchema.find({ email: userEmail }).sort({
+      createdAt: -1,
+    });
     res.status(200).json(expenses);
   } catch (error) {
     res.status(500).json({ message: "Server Error" });
